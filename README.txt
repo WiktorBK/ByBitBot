@@ -14,7 +14,7 @@ apisecret = "my_apisecret_from_bybit"
 
 # MAIL
 user = "mail_adress"
-password = "password"  # in order to get password go there https://myaccount.google.com/u/1/security. Activate 2-step verification and generate app password.
+password = "password"  # in order to get password visit this URL https://myaccount.google.com/u/1/security. Activate 2-step verification and generate app password.
 
 # PUSHUBULLET
 accesstoken = "my_accesstoken_from_pushbullet" # create an account on pushbullet and install the app on your phone to get notifications about trades.
