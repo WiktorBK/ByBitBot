@@ -1,0 +1,4 @@
+pandas==1.3.5
+pushbullet.py==0.12.0
+pybit==1.3.4
+ta==0.9.0
