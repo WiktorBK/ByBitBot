@@ -1,4 +1,4 @@
-import secretstest
+import secrets
 from pushbullet import PushBullet
 import smtplib
 from email.message import EmailMessage
@@ -12,14 +12,14 @@ def send_email(subject, body):
         # Create a message
         msg = EmailMessage()
         msg['Subject'] = subject
-        msg['From'] = secretstest.user
-        msg['To'] = secretstest.user
+        msg['From'] = secrets.user
+        msg['To'] = secrets.user
         msg.set_content(body)
-        smtp.login(secretstest.user, secretstest.password)
+        smtp.login(secrets.user, secrets.password)
         smtp.send_message(msg)
 
 # Push Bullet
-pb = PushBullet(secretstest.accesstoken)
+pb = PushBullet(secrets.accesstoken)
 now = datetime.now()
 hour = now.strftime("%H:%M:%S")
 
