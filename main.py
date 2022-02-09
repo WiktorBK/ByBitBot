@@ -254,7 +254,7 @@ def run():
         while True:
             # When trade is already opened
             if my_position_entry_price != 0:
-                print("\nTrade is aleady being executed")
+                print("\nTrade is already being executed")
                 stoploss = session.my_position(symbol=symbol)[
                     'result'][x]['stop_loss']
                 tp = session.my_position(symbol=symbol)[
@@ -288,14 +288,11 @@ def run():
             df = get3minutedata(symbol)
             print(f"{symbol} {check_no}\nPrev Signals: {prev_signals_agreement(df)}\nPsar Signal: {check_for_psar_signal(df)}\nMacd Signal: {check_for_macd_signal(df)}\nEMA Signal: {check_for_ema_signal(df)}\n{datetime.now()}\n")
             # Sending update notifications every 500 checks
-            if check_no % 500 == 0:
-                # nupd(f"running {check_no}",
-                # datetime.now().strftime("%H:%M:%S"))
-                pass
-            # Checking if the signals are the same
+        
+            
             open_price = df['Close'][-1]
             last_price = session.latest_information_for_symbol(symbol=symbol)['result'][0]['index_price']
-
+            # Checking if the signals are the same
             if check_for_psar_signal(df) == check_for_ema_signal(df) == check_for_macd_signal(df) and my_position_entry_price == 0 and is_at_best_price(last_price, open_price) and prev_signals_agreement(df) == False:
 
                 # If signals are correct postion opens and then we break out of the loop
