@@ -8,7 +8,6 @@ from datetime import datetime
 from notifications import ns, nto, ntc, nupd, ncon, nlc, nrc, nres
 import secrets
 
-start_time = datetime.now().strftime("%H:%M:%S")
 
 
 #############
@@ -261,8 +260,7 @@ def run():
                     'result'][x]['take_profit']
                 side = session.my_position(symbol=symbol)['result'][x]['side']
                 entry_hour = datetime.now().strftime("%H:%M:%S")
-                # ncon("Trade is being continued", entry_hour,
-                    #  side, my_position_entry_price)
+           
                 # Printing some information
                 print(f"open price: {my_position_entry_price}")
                 print(f"stop loss: {stoploss}")
@@ -272,23 +270,11 @@ def run():
                 break
 
             
-            # Force closing the app after 1 hour
-            time_now = datetime.now().strftime("%H:%M:%S")
-            format = '%H:%M:%S'
-            time1 = datetime.strptime(time_now, format) - \
-                datetime.strptime(start_time, format)
-            time1 = str(time1)
-            time_split = time1.split(":")
-            if time_split[2] == "03":
-                print("Restarted")
-                nres(time_now)
-                return None
 
             # Checking data every 2 second
             df = get3minutedata(symbol)
             print(f"{symbol} {check_no}\nPrev Signals: {prev_signals_agreement(df)}\nPsar Signal: {check_for_psar_signal(df)}\nMacd Signal: {check_for_macd_signal(df)}\nEMA Signal: {check_for_ema_signal(df)}\n{datetime.now()}\n")
-            # Sending update notifications every 500 checks
-        
+    
             
             open_price = df['Close'][-1]
             last_price = session.latest_information_for_symbol(symbol=symbol)['result'][0]['index_price']
@@ -336,17 +322,6 @@ def run():
          # This is trade zone where we wait for the trade to end
         while my_position_entry_price != 0:
             df = get3minutedata(symbol)
-            print(prev_signals_agreement(df))
-            time_now = datetime.now().strftime("%H:%M:%S")
-            format = '%H:%M:%S'
-            time1 = datetime.strptime(time_now, format) - datetime.strptime(start_time, format)
-            time1 = str(time1)
-            time_split = time1.split(":")
-            if time_split[0] == "1":
-                print("\nRestarted")
-                nres(time_now)
-                return None
-
             time.sleep(2)    
             try:
                 last_price = session.latest_information_for_symbol(
