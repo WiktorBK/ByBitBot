@@ -5,8 +5,8 @@ from pybit import HTTP
 from datetime import datetime
 from ta.trend import EMAIndicator, PSARIndicator, macd_diff
 from datetime import datetime
-from notificationstest import ns, nto, ntc, nupd, ncon, nlc, nrc, nres
-import secretstest
+from notifications import ns, nto, ntc, nupd, ncon, nlc, nrc, nres
+import secrets
 
 start_time = datetime.now().strftime("%H:%M:%S")
 
@@ -27,8 +27,8 @@ since = unixtime - 60 * 60 * 3*2
 # Opening bybit session
 session = HTTP(
     "https://api.bybit.com",
-    api_key=secretstest.apikey,
-    api_secret=secretstest.apisecret,
+    api_key=secrets.apikey,
+    api_secret=secrets.apisecret,
     request_timeout=60)
 
 
