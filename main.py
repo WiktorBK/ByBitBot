@@ -8,15 +8,11 @@ from datetime import datetime
 from notifications import ns, nto, ntc, nupd, ncon, nlc, nrc, nres
 import secrets
 
-
-
 #############
 symbol = 'ETHUSDT'
 tick_interval = '3'
 qty = 0.01
 #############
-
-
 
 now = datetime.utcnow()
 unixtime = calendar.timegm(now.utctimetuple())
@@ -29,10 +25,6 @@ session = HTTP(
     api_key=secrets.apikey,
     api_secret=secrets.apisecret,
     request_timeout=60)
-
-
-# notification
-# ns("Started",  datetime.now().strftime("%H:%M:%S"))
 
 
 ######################
@@ -54,6 +46,7 @@ def get3minutedata(symbol):
             **{'from': since}
         )['result']
         nrc(datetime.now().strftime("%H:%M:%S"))
+        
     # Format Data
     df = pd.DataFrame(data[:-1])
     df = df.iloc[:, 5:11]
@@ -62,6 +55,7 @@ def get3minutedata(symbol):
     df.index = pd.to_datetime(df.index, unit='ms')
     df = df.astype(float)
     return df
+
 def check_for_macd_signal(dataframe):
     df = dataframe
     # Adding MACD difference to dataframe
@@ -81,6 +75,7 @@ def check_for_macd_signal(dataframe):
             return "Sell"
     else:
         return "NO SIGNAL"
+    
 def check_for_psar_signal(dataframe):
     df = dataframe
     # Adding PSAR prices to dataframe
@@ -96,6 +91,7 @@ def check_for_psar_signal(dataframe):
         return "Sell"
     else:
         return "NO SIGNAL"
+    
 def check_for_ema_signal(dataframe):
     df = dataframe
     # Adding 100 EMA price to dataframe
@@ -105,11 +101,13 @@ def check_for_ema_signal(dataframe):
         return "Sell"
     elif df['Close'][-1] >= df['Ema100'][-1]:
         return "Buy"
+    
 def psar_price(dataframe):
     # Returning PSAR price
     df = dataframe
     df['pSAR'] = PSARIndicator(df['High'], df['Low'], df['Close']).psar()
     return df['pSAR'][-1]
+
 def calculate_takeprofit(open_price, stop_loss, side):
     # Calculating takeprofit based on open price, stoploss and side
     stop_loss_percentage = abs((1 - stop_loss/open_price))
@@ -120,6 +118,7 @@ def calculate_takeprofit(open_price, stop_loss, side):
         take_profit = open_price - open_price * take_profit_percentage
     take_profit = round(take_profit, 2)
     return take_profit
+
 def place_active_order(qty, side):
     session.place_active_order(
         symbol=symbol,
@@ -130,6 +129,7 @@ def place_active_order(qty, side):
         reduce_only=False,
         close_on_trigger=False
     )
+    
 def calculate_pnl(qty, entry_price, exit_price, sl, tp):
     tp_distance = abs(float(tp) - float(exit_price))
     sl_distance = abs(float(sl) - float(exit_price))
@@ -151,21 +151,7 @@ def calculate_pnl(qty, entry_price, exit_price, sl, tp):
     close_fee = close_size * 0.00075
     pnl = round(profit - entry_fee - close_fee, 5)
     return pnl
-def aboutToHitTP(entry_price, tp, last_price):
-    diff = abs(entry_price - tp)
-    onefourth = 0.33 * diff
-    last_price = float(last_price)
-    tp = float(tp)
-    if tp < entry_price:
-        if last_price <= onefourth + tp:
-            return True
-        else:
-            return False
-    elif tp > entry_price:
-        if last_price >= tp - onefourth:
-            return True
-        else:
-            return False
+
 def setnewstoploss(sl, entry_price, side):
     diff = abs(entry_price - sl)
     new_diff = diff/2
@@ -174,17 +160,20 @@ def setnewstoploss(sl, entry_price, side):
     elif sl < entry_price:
         new_sl = entry_price - new_diff
     session.set_trading_stop(symbol=symbol, stop_loss=new_sl, side=side)
+    
 def get_correct_index(list):
     leng = len(list)
     for i in range(leng):
         ep = list[i]['entry_price']
         if ep != 0:
             return i
+        
 def is_at_best_price(price_now, open_price):
     if abs(float(open_price) - float(price_now)) <= 3:
         return True
     else:
         return False
+    
 def prev_signals_agreement(df):
     df['Ema100'] = EMAIndicator(df['Close'], 100).ema_indicator()
     # Checking EMA conditions
@@ -227,11 +216,7 @@ def prev_signals_agreement(df):
         return True
     else:
         return False
-######################
-
-
-
-
+    
 # Main Function
 def run():
     # Starting main loop
@@ -239,7 +224,6 @@ def run():
     check_no = 1
 
     while True:
-        # This is executed at the begining and after every trade
         x = get_correct_index(session.my_position(symbol=symbol)['result'])
         if x == None:
             my_position_entry_price = 0
@@ -268,10 +252,8 @@ def run():
                 print(f"take profit: {tp}")
                 print(f"{entry_hour}")
                 break
-
-            
-
-            # Checking data every 2 second
+                
+            # Checking data every 2 seconds
             df = get3minutedata(symbol)
             print(f"{symbol} {check_no}\nPrev Signals: {prev_signals_agreement(df)}\nPsar Signal: {check_for_psar_signal(df)}\nMacd Signal: {check_for_macd_signal(df)}\nEMA Signal: {check_for_ema_signal(df)}\n{datetime.now()}\n")
     
@@ -319,7 +301,7 @@ def run():
             my_position_entry_price = session.my_position(
                 symbol=symbol)['result'][x]['entry_price']
         to_excel_entry = my_position_entry_price
-         # This is trade zone where we wait for the trade to end
+         # Trade Zone
         while my_position_entry_price != 0:
             df = get3minutedata(symbol)
             time.sleep(2)    
@@ -335,7 +317,7 @@ def run():
                 my_position_entry_price = session.my_position(
                     symbol=symbol)['result'][x]['entry_price']
 
-        # sending notifications and uploading to excel
+        # sending notifications
         closed_pnl = calculate_pnl(qty, to_excel_entry, last_price, stoploss, tp)
         ntc(to_excel_entry, session.latest_information_for_symbol(symbol=symbol)['result'][0]['index_price'], closed_pnl, datetime.now().strftime("%H:%M:%S"))
         trade_id += 1
