@@ -10,11 +10,11 @@ Before running the project make sure to:
 
 ```
 # BYBIT
-apikey = "my_apikey_from_bybit"
-apisecret = "my_apisecret_from_bybit"
+apikey = "apikey_from_bybit"
+apisecret = "apisecret_from_bybit"
 
 # MAIL
-user = "mail_adress"
+user = "email_adress"
 password = "password"  
 # in order to get password visit this URL https://myaccount.google.com/u/1/security. Activate 2-step verification and generate app password.
 
@@ -25,5 +25,5 @@ accesstoken = "my_accesstoken_from_pushbullet"
 
 
 2. Install all requirements:
-You will find them in requirements.txt file
+You will find them inside requirements.txt file
 
