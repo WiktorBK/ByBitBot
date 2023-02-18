@@ -8,16 +8,14 @@ from datetime import datetime
 from notifications import ns, nto, ntc, nupd, ncon, nlc, nrc, nres
 import secrets
 
-#############
+
 symbol = 'ETHUSDT'
 tick_interval = '3'
 qty = 0.01
-#############
 
 now = datetime.utcnow()
 unixtime = calendar.timegm(now.utctimetuple())
 since = unixtime - 60 * 60 * 3*2
-
 
 # Opening bybit session
 session = HTTP(
@@ -26,8 +24,6 @@ session = HTTP(
     api_secret=secrets.apisecret,
     request_timeout=60)
 
-
-######################
 def get3minutedata(symbol):
     # Get Data
     try:
