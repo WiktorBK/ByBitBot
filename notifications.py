@@ -23,7 +23,7 @@ pb = PushBullet(secrets.accesstoken)
 now = datetime.now()
 hour = now.strftime("%H:%M:%S")
 
-##########
+
 def ntc(entry_price, price_now, pnl, hour):  # notification - trade close
     pb.push_note("Trade Info",
                  f"{hour}\n"
@@ -76,4 +76,4 @@ def ncon(msg, hour, side, entry): # notification - trade continuation
                  )
 def nres(hour):
     pb.push_note("Bot Info", f"{hour}\nRestarted")
-##########
+
