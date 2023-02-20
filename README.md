@@ -1,12 +1,25 @@
-# ByBitBot
+### What is ByBitBot?
 
-Bot executes trades based on trading strategy: **100EMA + PARABOLIC SAR + MACD**
-It sets up stop loss and take profit prices by itself
+ByBitBot is a program built with python. It's main purpose is to provide great returns on cryptocurrency investements.
+Bot is fully automated and doesn't require human interference.
+
+### How does it work?
+
+ByBitBot works on the basis of a popular online cryptocurrency exchange - ByBit.
+Program executes trades based on trading strategy: **100EMA + PARABOLIC SAR + MACD**.
+This strategy consists of 3 different technical indicators which are calculated by **python-ta** library.
+Whenever strategy indicates good oportunity, program buys certain amount of crypto and sets stoploss and take-profit prices by itself.
+Bot sends notifications to your phone using **pushbullet** app simultaneously.
+ 
+ 
 
 
 Before running the project make sure to:
 
-1. Create secrets.py file 
+- Install all requirements:
+You will find them inside requirements.txt file
+
+- create secrets.py file: 
 
 ```
 # BYBIT
@@ -23,7 +36,4 @@ accesstoken = "my_accesstoken_from_pushbullet"
 # create an account on pushbullet and install the app on your phone to get notifications about trades.
 ```
 
-
-2. Install all requirements:
-You will find them inside requirements.txt file
 
