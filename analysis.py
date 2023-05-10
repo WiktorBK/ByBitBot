@@ -73,7 +73,26 @@ class Analyser:
         '''
         if df['Close'][-1-x] <= ema100[-1-x]: return "Sell"
 
-        # Check EMA conditions
-        if ema100[-1-x] <= ema100[-1-x]: return "Sell"
-
         elif df['Close'][-1-x] >= ema100[-1-x]: return "Buy"
+    
+    @classmethod
+    def check_signals(cls, df, prev=False):
+        ema= cls.ema_signal(df)
+        prev_ema= cls.ema_signal(df, prev=True)
+        if prev is False:
+            if ema == cls.psar_signal(df) == cls.macd_signal(df):
+                return cls.ema_singal(df)
+        else:
+              if prev_ema == cls.psar_signal(df, prev=True) == cls.macd_signal(df, prev=True):
+                return prev_ema
+        return "NO SIGNAL"
+
+    def psar_price(df):
+     
+        df["pSAR"] = PSARIndicator(df['High'], df['Low'], df['Close']).psar()
+        return df["pSAR"][-1]
+ 
+    
+
+    
+
