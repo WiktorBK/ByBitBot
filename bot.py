@@ -48,7 +48,19 @@ class Bot:
         print(f"Current signals:\nMACD: {macd}; PSAR: {psar}; EMA: {ema}\nLast price of {SYMBOL}: {lp}\n")
 
 
+    def run(self):
+        # main sequence
 
+        if self.in_trade(): return "Waiting for trade to end"
+
+        data = self.bybit.get_format_data()
+        signal = Analyser.check_signals(data)
+        self.print_info(data)
+        if signal != "NO SIGNAL":
+            self.bybit.place_order(signal)
+            sl = Analyser.psar_price(data)
+            self.bybit.set_stops(sl, self.calculate_takeprofit(sl, signal), signal)
+            print(f'Position has been opened! {signal} {self.bybit.get_last_price()}')
             
 
     
