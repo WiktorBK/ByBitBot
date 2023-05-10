@@ -56,11 +56,22 @@ class Analyser:
                 or pd.isna(psar_down[-4-x]) and pd.isna(psar_down[-3-x]) == False:
             return "Sell"
         
-    
-    def ema_signal(self, df, prev=False):
+        else: return "NO SIGNAL"
+     
+    def ema_signal(df, prev=False):
 
-        ema100 = df.add_column("Ema100", EMAIndicator(df['Close'], 100).ema_indicator())
+        df["Ema100"] = EMAIndicator(df['Close'], 100).ema_indicator()
+        ema100 = df["Ema100"]
         x = 1 if prev else 0
+        '''
+          Check EMA conditions
+
+            signal buy if price above 100 ema 
+            signal sell if price below 100 ema 
+
+            if prev == True signals will be checked for previous candle
+        '''
+        if df['Close'][-1-x] <= ema100[-1-x]: return "Sell"
 
         # Check EMA conditions
         if ema100[-1-x] <= ema100[-1-x]: return "Sell"
