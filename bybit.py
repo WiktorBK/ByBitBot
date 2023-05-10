@@ -26,21 +26,16 @@ class Bybit():
             return session
         except: print(f"Session could not be opened: {traceback.format_exc()}")
     
-    def get_data(self, since):
-
+    def get_data(self):
         try:
-            data = self.session.query_kline(
-            symbol=SYMBOL, interval=INTERVAL,
-            **{'from': since} 
-            )['result']
-
-            return CandleData.format_df(data)
-
+            data = self.session.query_kline(symbol=SYMBOL, interval=INTERVAL,**{'from': self.calculate_since()} )['result']
+            return data  
         except Exception: 
             print(f"couldn't import data:\n {traceback.format_exc()}")
 
+    def get_format_data(self):
 
-bybit = Bybit(AKEY, ASECRET)
+        data = self.get_data()
 
 
 print(bybit.get_data(calendar.timegm(datetime.datetime.utcnow().utctimetuple()) - 3600))
