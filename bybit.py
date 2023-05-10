@@ -21,8 +21,10 @@ class Bybit():
         return unixtime - 21600
 
     def open_session(self):
-        session = HTTP( "https://api.bybit.com", api_key=self.api_key, api_secret=self.api_secret, request_timeout=60)
-        return session
+        try:
+            session = HTTP( "https://api.bybit.com", api_key=self.api_key, api_secret=self.api_secret, request_timeout=60)
+            return session
+        except: print(f"Session could not be opened: {traceback.format_exc()}")
     
     def get_data(self, since):
 
