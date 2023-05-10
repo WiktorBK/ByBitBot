@@ -15,6 +15,10 @@ class Bybit():
         self.api_secret = api_secret
         self.session = self.open_session()
 
+    def calculate_since(self):
+        now = datetime.utcnow()
+        unixtime = calendar.timegm(now.utctimetuple())
+        return unixtime - 21600
 
     def open_session(self):
         session = HTTP( "https://api.bybit.com", api_key=self.api_key, api_secret=self.api_secret, request_timeout=60)
