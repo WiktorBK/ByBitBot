@@ -1,25 +1,35 @@
 from ta.trend import EMAIndicator, PSARIndicator, macd_diff
+import pandas as pd
 
 
-class Analyzer:
+class Analyser:
 
-    def macd_signal(self, df, prev=False):
+    def macd_signal(df, prev=False):
 
          # Add macd difference to dataframe
-        macd = df.add_column("MACD Relation", macd_diff(df['Close']))
+        df["MACD Relation"] = macd_diff(df['Close'])
+        macd = df["MACD Relation"]
         x = 1 if prev else 0
 
-         # Check different MACD conditions
+        '''
+          Check different MACD conditions
+         
+            make sure that the difference isn't to high already
+
+            signal will be 'buy' or 'sell' for 3 candles since appearing.
+            eg: on timeframe: 3min -> signal opportunity for 9 minutes (3*3).
+
+            if prev == True signals will be checked for previous candle
+        '''
         if macd[-1-x] > 0 and macd[-2-x] <= 0 or macd[-2-x] > 0 and macd[-3-x] <= 0 or macd[-3-x] > 0 and macd[-4-x] <= 0:
             if macd[-1-x] < 5 and macd[-1-x] > 0:
-                return "BUY"
+                return "Buy"
             
         elif macd[-1-x] < 0 and macd[-2-x] >= 0 or macd[-2-x] < 0 and macd[-3-x] >= 0 or macd[-3-x] < 0 and macd[-4-x] >= 0:
             if macd[-1-x] > -5 and macd[-1-x] < 0:
-                return "SELL"
+                return "Sell"
         else:
             return "NO SIGNAL"
-        
 
     def psar_signal(self, df, prev=False):
 
