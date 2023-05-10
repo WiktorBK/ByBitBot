@@ -31,22 +31,30 @@ class Analyser:
         else:
             return "NO SIGNAL"
 
-    def psar_signal(self, df, prev=False):
+    def psar_signal(df, prev=False):
+
+
 
          # Add PSAR prices to dataframe
-        psar_down = df.add_column("pSAR_down", PSARIndicator(df['High'], df['Low'], df['Close']).psar_down())
-        psar_up = df.add_column("pSAR_up", PSARIndicator(df['High'], df['Low'], df['Close']).psar_up())
+        df["pSAR_down"] = PSARIndicator(df['High'], df['Low'], df['Close']).psar_down()
+        df["pSAR_up"] =  PSARIndicator(df['High'], df['Low'], df['Close']).psar_up()
+        psar_down = df["pSAR_down"]
         x = 1 if prev else 0
 
-         # Check different PSAR conditions
-        if df.isnull(psar_down[-2-x]) == False and df.isnull(psar_down[-1-x]) or df.isnull(psar_down[-3-x]) == False and df.isnull(psar_down[-2-x]) \
-                or df.isnull(psar_down[-4-x]) == False and df.isnull(psar_down[-3-x]):
-            return "BUY"
-        elif df.isnull(psar_down[-2-x]) and df.isnull(psar_down[-1-x]) == False or df.isnull(psar_down[-3-x]) and df.isnull(psar_down[-2-x]) == False \
-                or df.isnull(psar_down[-4-x]) and df.isnull(psar_down[-3-x]) == False:
-            return "SELL"
-        else:
-            return "NO SIGNAL"
+        '''
+          Check different PSAR conditions
+
+            signal will be 'buy' or 'sell' for 3 candles since appearing.
+            eg: on timeframe: 3min -> signal opportunity for 9 minutes (3*3).
+
+            if prev == True signals will be checked for previous candle
+        '''
+        if pd.isna(psar_down[-2-x]) == False and pd.isna(psar_down[-1-x]) or pd.isna(psar_down[-3-x]) == False and pd.isna(psar_down[-2-x]) \
+                or pd.isna(psar_down[-4-x]) == False and pd.isna(psar_down[-3-x]):
+            return "Buy"
+        elif pd.isna(psar_down[-2-x]) and pd.isna(psar_down[-1-x]) == False or pd.isna(psar_down[-3-x]) and pd.isna(psar_down[-2-x]) == False \
+                or pd.isna(psar_down[-4-x]) and pd.isna(psar_down[-3-x]) == False:
+            return "Sell"
         
     
     def ema_signal(self, df, prev=False):
