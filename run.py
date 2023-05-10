@@ -1,14 +1,12 @@
-# from apscheduler.schedulers.background import BlockingScheduler
-# from jobs.jobs import Test
+from bot import Bot
 
-# scheduler = BlockingScheduler(daemon=True)
+from apscheduler.schedulers.background import BlockingScheduler
 
-# scheduler.add_job(Test.run, 'interval', seconds=3)
+'''
+Run main function every 3 seconds using apscheduler
+'''
 
-# scheduler.start()
-
-
-
-# if in trade run function to check if still in trade
-
-# if not in trade then check all the signals and wait for entry
+bot = Bot()
+scheduler = BlockingScheduler(daemon=True)
+scheduler.add_job(bot.run, 'interval', seconds=3)
+scheduler.start()
