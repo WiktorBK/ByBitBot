@@ -1,15 +1,15 @@
 from pybit.usdt_perpetual import HTTP
+import pandas as pd
+
 import traceback
 import calendar
-import datetime
+from datetime import datetime
 
 from config import *
-from dataframe import CandleData
 
 
 
-
-class Bybit:
+class Bybit():
     def __init__(self, api_key, api_secret):
         self.api_key = api_key
         self.api_secret = api_secret
