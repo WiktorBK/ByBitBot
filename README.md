@@ -1,11 +1,18 @@
 
 # BybitBot
+<table>
+<tr>
+<td>
+  ByBitBot is a program built with python. It's main purpose is to provide great returns on cryptocurrency investements. Bot is fully automated and doesn't require human interference.
+</td>
+</tr>
+</table>
 
-ByBitBot is a program built with python. It's main purpose is to provide great returns on cryptocurrency investements. Bot is fully automated and doesn't require human interference.
 
 ## How does it work?
+  ByBitBot works on the basis of a popular online cryptocurrency exchange - **ByBit**. Program executes trades based on trading strategy: **100EMA + PARABOLIC SAR + MACD**. This strategy consists of 3 different technical indicators which are calculated by python-ta library. Whenever strategy indicates good oportunity, program buys certain amount of crypto and sets stoploss and take-profit prices by itself.
 
-ByBitBot works on the basis of a popular online cryptocurrency exchange - **ByBit**. Program executes trades based on trading strategy: **100EMA + PARABOLIC SAR + MACD**. This strategy consists of 3 different technical indicators which are calculated by python-ta library. Whenever strategy indicates good oportunity, program buys certain amount of crypto and sets stoploss and take-profit prices by itself.
+
 
 ## Installation
 
