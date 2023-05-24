@@ -5,7 +5,6 @@ import pandas as pd
 class Analyser:
 
     def macd_signal(df, prev=False):
-
          # Add macd difference to dataframe
         df["MACD Relation"] = macd_diff(df['Close'])
         macd = df["MACD Relation"]
@@ -32,9 +31,6 @@ class Analyser:
             return "NO SIGNAL"
 
     def psar_signal(df, prev=False):
-
-
-
          # Add PSAR prices to dataframe
         df["pSAR_down"] = PSARIndicator(df['High'], df['Low'], df['Close']).psar_down()
         df["pSAR_up"] =  PSARIndicator(df['High'], df['Low'], df['Close']).psar_up()
@@ -59,7 +55,6 @@ class Analyser:
         else: return "NO SIGNAL"
      
     def ema_signal(df, prev=False):
-
         df["Ema100"] = EMAIndicator(df['Close'], 100).ema_indicator()
         ema100 = df["Ema100"]
         x = 1 if prev else 0
@@ -92,7 +87,3 @@ class Analyser:
         df["pSAR"] = PSARIndicator(df['High'], df['Low'], df['Close']).psar()
         return df["pSAR"][-1]
  
-    
-
-    
-
