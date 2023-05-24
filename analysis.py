@@ -81,7 +81,7 @@ class Analyser:
         prev_ema= cls.ema_signal(df, prev=True)
         if prev is False:
             if ema == cls.psar_signal(df) == cls.macd_signal(df):
-                return cls.ema_singal(df)
+                return cls.ema_signal(df)
         else:
               if prev_ema == cls.psar_signal(df, prev=True) == cls.macd_signal(df, prev=True):
                 return prev_ema
