@@ -22,8 +22,9 @@ class Bot:
             ep = trades[i]['entry_price']
             if ep != 0: return i
     
-    def calculate_takeprofit(entry_price, sl, side):
-
+    def calculate_takeprofit(self, entry_price, sl, side):
+        entry_price=float(entry_price)
+        sl=float(sl)
         # Calculate takeprofit based on open price, stoploss price and side
         sl_percent = abs((1 - sl/entry_price))
         tp_percent = sl_percent * 1.25
@@ -59,7 +60,8 @@ class Bot:
         if signal != "NO SIGNAL":
             self.bybit.place_order(signal)
             sl = Analyser.psar_price(data)
-            self.bybit.set_stops(sl, self.calculate_takeprofit(sl, signal), signal)
+            self.bybit.set_stops(str(round(float(sl),2)), self.calculate_takeprofit(self.bybit.get_last_price(), sl, signal), signal)
+            
             print(f'Position has been opened! {signal} {self.bybit.get_last_price()}')
             
 
